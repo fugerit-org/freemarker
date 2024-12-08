@@ -347,9 +347,9 @@ publishing {
 
                 packaging = "jar"
                 name.set("Apache FreeMarker")
-                description.set("""
-                    Google App Engine compliant variation of FreeMarker.
+                description.set("\n" + """
                     FreeMarker is a "template engine"; a generic tool to generate text output based on templates.
+                    This is the Google App Engine (\"gae\") compliant variation.
                     """.trimIndent().prependIndent("    ") + "\n  "
                 )
                 url.set("https://freemarker.apache.org/")
