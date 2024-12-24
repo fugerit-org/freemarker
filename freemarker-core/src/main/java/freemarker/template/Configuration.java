@@ -147,7 +147,7 @@ import freemarker.template.utility.XmlEscape;
  *   <li>{@link #setWrapUncheckedExceptions(boolean) wrap_unchecked_exceptions}: Set to {@code true}.
  *   <li>{@link #setFallbackOnNullLoopVariable(boolean) fallback_on_null_loop_variable}: Set to {@code false}.
  *   <li>{@link #setSQLDateAndTimeTimeZone(TimeZone) sql_date_and_time_time_zone}: Set to {@code TimeZone.getDefault()}
- *       (or if set as as property value string, then to this: {@code JVM default}).
+ *       (or if set as property value string, then to this: {@code JVM default}).
  *   <!-- 2.4: recommend the new object wrapper here -->
  * </ul>
  * 
