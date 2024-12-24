@@ -106,30 +106,33 @@ import freemarker.template.utility.XmlEscape;
  * <b>The main entry point into the FreeMarker API</b>; encapsulates the configuration settings of FreeMarker,
  * also serves as a central template-loading and caching service.
  *
- * <p>This class is meant to be used in a singleton pattern. That is, you create an instance of this at the beginning of
+ * <p>Instances of this meant to be singletons. That is, typically, you create an instance of this at the beginning of
  * the application life-cycle, set its {@link #setSetting(String, String) configuration settings} there (either with the
- * setter methods like {@link #setTemplateLoader(TemplateLoader)} or by loading a {@code .properties} file), and then
- * use that single instance everywhere in your application. Frequently re-creating {@link Configuration} is a typical
- * and grave mistake from performance standpoint, as the {@link Configuration} holds the template cache, and often also
- * the class introspection cache, which then will be lost. (Note that, naturally, having multiple long-lived instances,
- * like one per component that internally uses FreeMarker is fine.)  
+ * setter methods like {@link #setTemplateLoader(TemplateLoader)}, or by loading a {@code .properties} file), and then
+ * use that single instance everywhere in your application. However, when different components (subsystems) in your
+ * application need different configuration settings, or when a component uses FreeMarker internally, then you should
+ * have one "singleton" per such component. The point is that {@link Configuration} instances should be long-lived
+ * objects, as frequently re-creating the {@link Configuration} is very bad for performance, as the
+ * {@link Configuration} instance holds the template cache, and often also the class introspection cache, which are
+ * expensive to rebuild.
  * 
  * <p>The basic usage pattern is like:
  * 
  * <pre>
  *  // Where the application is initialized; in general you do this ONLY ONCE in the application life-cycle!
- *  Configuration cfg = new Configuration(VERSION_<i>X</i>_<i>Y</i>_<i>Z</i>));
+ *  Configuration cfg = new Configuration(Configuration.VERSION_<i>X</i>_<i>Y</i>_<i>Z</i>));
  *  // Where VERSION_<i>X</i>_<i>Y</i>_<i>Z</i> enables the not-100%-backward-compatible fixes introduced in
  *  // FreeMarker version X.Y.Z  and earlier (see {@link #Configuration(Version)}).
  *  cfg.set<i>SomeSetting</i>(...);
  *  cfg.set<i>OtherSetting</i>(...);
  *  ...
  *  
- *  // Later, whenever the application needs a template (so you may do this a lot, and from multiple threads):
+ *  // Later, whenever the application needs a template (so you may do this many times, and from multiple threads):
  *  {@link Template Template} myTemplate = cfg.{@link #getTemplate(String) getTemplate}("myTemplate.ftlh");
  *  myTemplate.{@link Template#process(Object, java.io.Writer) process}(dataModel, out);</pre>
  * 
- * <p>A couple of settings that you should not leave on its default value are:
+ * <p>A couple of settings that you should not leave on its default value are (either because they will differ for
+ * all applications, or because they have an unfortunate default value kept for backward compatibility):
  * <ul>
  *   <li>{@link #setTemplateLoader(TemplateLoader) template_loader}: The default value is deprecated and in fact quite
  *       useless. (For the most common cases you can use the convenience methods,
@@ -140,6 +143,11 @@ import freemarker.template.utility.XmlEscape;
  *   <li>{@link #setTemplateExceptionHandler(TemplateExceptionHandler) template_exception_handler}: For developing
  *       HTML pages, the most convenient value is {@link TemplateExceptionHandler#HTML_DEBUG_HANDLER}. For production,
  *       {@link TemplateExceptionHandler#RETHROW_HANDLER} is safer to use.
+ *   <li>{@link #setLogTemplateExceptions(boolean) log_template_exceptions}: Set to {@code false}.
+ *   <li>{@link #setWrapUncheckedExceptions(boolean) wrap_unchecked_exceptions}: Set to {@code true}.
+ *   <li>{@link #setFallbackOnNullLoopVariable(boolean) fallback_on_null_loop_variable}: Set to {@code false}.
+ *   <li>{@link #setSQLDateAndTimeTimeZone(TimeZone) sql_date_and_time_time_zone}: Set to {@code TimeZone.getDefault()}
+ *       (or if set as as property value string, then to this: {@code JVM default}).
  *   <!-- 2.4: recommend the new object wrapper here -->
  * </ul>
  * 
