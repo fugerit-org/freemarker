@@ -995,7 +995,7 @@ public class Configuration extends Configurable implements Cloneable, ParserConf
      *           characters were treated as equal by the collator, but will count as different now. But it's very
      *           unlikely that anyone wanted to depend on such fragile logic anyway. Note again that we still do UNICODE
      *           normalization, so combining characters won't break your comparisons.)</p></li>
-     *       <li><p>
+     *         <li><p>
      *          The default {@link Configuration#setObjectWrapper(ObjectWrapper) object_wrapper} now exposes Java
      *          records public methods with 0-arguments and non-void return type are now exposed both as properties,
      *          and as methods; see {@link BeansWrapper#BeansWrapper(Version)}.
@@ -1005,14 +1005,13 @@ public class Configuration extends Configurable implements Cloneable, ParserConf
      *       <p>
      *       2.3.34 (or higher):
      *       <ul>
-     *       <li><p>
-     *          Fixes this parser bug, which can break already incorrect templates that accidentally worked so far:
-     *          {@code [#sep]}, {@code <#sep>}, and {@code <sep>} were all interpreted as a call to the {@code sep}
-     *          directive, regardless if the already established tag syntax was angle bracket or square bracket tags, or
-     *          if the tag syntax was strict (requiring {@code #}) or not. With this fix enabled, a {@code sep} tag with
-     *          the tag syntax that doesn't match the configured/established tag syntax will be seen as just static
-     *          text, just as it's done for any other FTL tags.
-     *       </ul>
+     *         <li><p>
+     *           Fixes this parser bug, which can break already incorrect templates that accidentally worked so far:
+     *           {@code [#sep]}, {@code <#sep>}, and {@code <sep>} were all interpreted as a call to the {@code sep}
+     *           directive, regardless if the already established tag syntax was angle bracket or square bracket tags, or
+     *           if the tag syntax was strict (requiring {@code #}) or not. With this fix enabled, a {@code sep} tag with
+     *           the tag syntax that doesn't match the configured/established tag syntax will be seen as just static
+     *           text, just as it's done for any other FTL tags.
      *       </ul>
      *   </li>
      * </ul>
