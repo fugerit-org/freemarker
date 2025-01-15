@@ -68,6 +68,8 @@ gradle/**
 .directory
 .Trash*
 
+freemarker-test-native/**
+
 # Well known files that need no license note:
 # -------------------------------------------
 
