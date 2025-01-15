@@ -157,6 +157,9 @@ public abstract class Logger {
     private static final String REAL_LOG4J_PRESENCE_CLASS = "org.apache.log4j.FileAppender";
     private static final String LOG4J_OVER_SLF4J_TESTER_CLASS = "freemarker.log._Log4jOverSLF4JTester";
 
+    // it is true if running in a GraalVM native build (issue #229) - we want to do something with it?
+    private static final boolean IS_AOT = Boolean.getBoolean("com.oracle.graalvm.isaot");
+
     /**
      * Order matters! Starts with the lowest priority.
      */
