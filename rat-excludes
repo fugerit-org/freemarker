@@ -68,6 +68,11 @@ gradle/**
 .directory
 .Trash*
 
+# ignore for freemarker-test-graalvm-native module (only used for GraalVM native support compliance)
+freemarker-test-graalvm-native/build/**
+freemarker-test-graalvm-native/README.md
+freemarker-test-graalvm-native/src/main/resources/freemarker-templates/**
+
 # Well known files that need no license note:
 # -------------------------------------------
 
