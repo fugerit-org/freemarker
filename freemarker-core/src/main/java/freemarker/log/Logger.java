@@ -198,10 +198,20 @@ public abstract class Logger {
         return LIBRARIES_BY_PRIORITY[(libraryEnum - 1) * 2 + 1];
     }
 
-    private static boolean isAutoDetected(int libraryEnum) {
-        // 2.4: Remove libraryEnum == LIBRARY_SLF4J || libraryEnum == LIBRARY_COMMONS
+    // legacy auto-detection (until FreeMarker 2.3.X)
+    private static boolean isAutoDetectedLegacy( int libraryEnum ) {
         return !(libraryEnum == LIBRARY_AUTO || libraryEnum == LIBRARY_NONE
                 || libraryEnum == LIBRARY_SLF4J || libraryEnum == LIBRARY_COMMONS);
+    }
+
+    // next generation auto-detection (FreeMarker 2.4.X and on)
+    private static boolean isAutoDetectedNG( int libraryEnum ) {
+        return !(libraryEnum == LIBRARY_AUTO || libraryEnum == LIBRARY_NONE);
+    }
+
+    private static boolean isAutoDetected(int libraryEnum) {
+        // 2.4: Remove libraryEnum == LIBRARY_SLF4J || libraryEnum == LIBRARY_COMMONS (use only isAutoDetectedNG()=
+        return IS_GRAALVM_NATIVE ? isAutoDetectedNG(libraryEnum) : isAutoDetectedLegacy(libraryEnum);
     }
 
     private static int libraryEnum;
