@@ -9,6 +9,12 @@
         }
       },
       {
+        "pattern": "\\Qfreemarker/ext/beans/unsafeMethods.properties\\E",
+        "condition": {
+          "typeReachable": "freemarker.ext.beans.LegacyDefaultMemberAccessPolicy"
+        }
+      },
+      {
         "pattern": "\\Qfreemarker/version.properties\\E",
         "condition": {
           "typeReachable": "freemarker.template.utility.ClassUtil"
