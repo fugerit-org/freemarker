@@ -47,7 +47,7 @@ public class HelloHandler {
      */
     public void sayHello() throws Exception {
         try (StringWriter buffer = new StringWriter()) {
-            Version version = Configuration.getVersion();   // using latest version
+            Version version = new Version(Configuration.getVersion().toString());  // using latest version
             // creates FreeMarker configuration
             Configuration cfg = new Configuration( version );
             cfg.setClassForTemplateLoading(HelloDataModel.class, "/freemarker-templates/");
