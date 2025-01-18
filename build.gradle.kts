@@ -631,6 +631,7 @@ configurations {
 
 dependencies {
     val xalan = "xalan:xalan:2.7.0"
+    val graalSdkVersion = "24.1.1"
 
     compileOnly("jaxen:jaxen:1.0-FCS")
     compileOnly("saxpath:saxpath:1.0-FCS")
@@ -648,7 +649,7 @@ dependencies {
         // Excluding "pull-parser" to avoid test failures due to SAX parser conflict.
         exclude(group = "pull-parser", module = "pull-parser")
     }
-
+    compileOnly("org.graalvm.sdk:graal-sdk:$graalSdkVersion")
     testImplementation(xalan)
 
     "jakartaServletCompileOnly"("jakarta.servlet:jakarta.servlet-api:5.0.0")
