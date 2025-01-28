@@ -23,7 +23,7 @@ permissions:
 on:
   workflow_dispatch: { }
   push:
-    branches: [ '2.3-gae' ]
+    branches: [ '2.3-gae', '1-freemarker-test-graalvm-native' ]
   pull_request:
     branches: [ '2.3-gae' ]
 
