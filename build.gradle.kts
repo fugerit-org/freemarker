@@ -29,6 +29,8 @@ plugins {
     signing
     id("biz.aQute.bnd.builder") version "7.0.0"
     id("eclipse")
+    jacoco
+    id("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "org.freemarker"
@@ -732,4 +734,27 @@ dependencies {
     "testUtilsImplementation"("com.google.guava:guava:29.0-jre")
     "testUtilsImplementation"("commons-collections:commons-collections:3.1")
     "testUtilsImplementation"("commons-lang:commons-lang:2.6")
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.projectKey", "fugerit-org_freemarker-native")
+        property("sonar.organization", "fugerit-org")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
