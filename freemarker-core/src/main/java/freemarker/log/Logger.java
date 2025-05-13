@@ -402,6 +402,7 @@ public abstract class Logger {
                     } else {
                         matchedEnum++;
                     }
+                    System.out.println( "ensureLoggerFactorySet : foundMatch="+foundMatch+", matchedEnum="+matchedEnum );
                 } while (matchedEnum <= MAX_LIBRARY_ENUM && !foundMatch);
 
                 if (!foundMatch) {
@@ -417,6 +418,7 @@ public abstract class Logger {
             }
 
             try {
+                System.out.println( "ensureLoggerFactorySet : setLibrary="+libraryEnum );
                 setLibrary(libraryEnum);
                 if (sysPropVal != null) {
                     initializedFromSystemProperty = true;
@@ -444,6 +446,7 @@ public abstract class Logger {
     private static LoggerFactory createLoggerFactory(int libraryEnum) throws ClassNotFoundException {
         if (libraryEnum == LIBRARY_AUTO) {
             for (int libraryEnumToTry = MAX_LIBRARY_ENUM; libraryEnumToTry >= MIN_LIBRARY_ENUM; libraryEnumToTry--) {
+                System.out.println( "createLoggerFactory : libraryEnumToTry="+libraryEnumToTry );
                 if (!isAutoDetected(libraryEnumToTry)) continue;
                 // skip hasLog4LibraryThatDelegatesToWorkingSLF4J when running in GraalVM native image
                 if (!IS_GRAALVM_NATIVE && libraryEnumToTry == LIBRARY_LOG4J && hasLog4LibraryThatDelegatesToWorkingSLF4J()) {
@@ -453,6 +456,7 @@ public abstract class Logger {
                 try {
                     return createLoggerFactoryForNonAuto(libraryEnumToTry);
                 } catch (ClassNotFoundException e) {
+                    System.out.println( "createLoggerFactory : libraryEnumToTry="+libraryEnumToTry+" error="+e );
                     // Expected, intentionally suppressed.
                 } catch (Throwable e) {
                     logErrorInLogger(
@@ -474,6 +478,7 @@ public abstract class Logger {
      */
     private static LoggerFactory createLoggerFactoryForNonAuto(int libraryEnum) throws ClassNotFoundException {
         final String availabilityCheckClassName = getAvailabilityCheckClassName(libraryEnum);
+        System.out.println("createLoggerFactoryForNonAuto : libraryEnum="+libraryEnum+", availabilityCheckClassName="+availabilityCheckClassName);
         if (availabilityCheckClassName != null) { // Dynamically created factory
             Class.forName(availabilityCheckClassName);
             String libraryName = getLibraryName(libraryEnum);
@@ -518,6 +523,7 @@ public abstract class Logger {
 
     private synchronized static void setLibrary(int libraryEnum) throws ClassNotFoundException {
         loggerFactory = createLoggerFactory(libraryEnum);
+        System.out.println( "setLibrary loggerFactory="+loggerFactory );
         Logger.libraryEnum = libraryEnum;
     }
 
