@@ -102,8 +102,12 @@ open class JakartaSourceRootGeneratorTask @Inject constructor(
         sourceDirectory.asFileTree.visit(object : EmptyFileVisitor() {
             override fun visitFile(fileDetails: FileVisitDetails) {
                 val relPath = fileDetails.relativePath
+                    ?: throw IllegalStateException("File has no relative path: ${fileDetails.file}")
 
-                val newPackage = toNewPath(relPath.parent.segments.asList(), origToNewPackage)
+                val parentPath = relPath.parent
+                    ?: throw IllegalStateException("File has no parent path: ${fileDetails.file}")
+
+                val newPackage = toNewPath(parentPath.segments.asList(), origToNewPackage)
 
                 val srcPath = fileDetails.file
                 var fileContent = srcPath.readText()

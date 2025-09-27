@@ -63,10 +63,14 @@ open class FreemarkerRootPlugin : Plugin<Project> {
                 val resourceTemplatesDir = ext.versionService.resourceTemplatesDir
 
                 named<ProcessResources>(JavaPlugin.PROCESS_RESOURCES_TASK_NAME) {
-                    with(project.copySpec {
-                        from(resourceTemplatesDir)
-                        filter<ReplaceTokens>(mapOf("tokens" to ext.versionDef.versionFileTokens))
-                    })
+                    with(
+                        project.copySpec {
+                            from(resourceTemplatesDir)
+                            filter<ReplaceTokens>(
+                                mapOf("tokens" to ext.versionDef.versionFileTokens)
+                            )
+                        }
+                    )
                 }
 
                 named<Jar>(mainSourceSet.sourcesJarTaskName) {
@@ -74,11 +78,18 @@ open class FreemarkerRootPlugin : Plugin<Project> {
                     manifest.attributes(
                         "Multi-Release" to "true"
                     )
+                    // Gradle 9 requires DirectoryProperty APIs instead of raw File
+                    destinationDirectory.set(
+                        project.layout.buildDirectory.dir("libs")
+                    )
                 }
 
                 withType<org.nosphere.apache.rat.RatTask>() {
                     doLast {
-                        println("RAT (${name} task) report was successful: ${reportDir.get().asFile.toPath().resolve("index.html").toUri()}")
+                        println(
+                            "RAT (${name} task) report was successful: " +
+                                    reportDir.get().asFile.toPath().resolve("index.html").toUri()
+                        )
                     }
                 }
             }
@@ -93,12 +104,16 @@ open class FreemarkerRootPlugin : Plugin<Project> {
 
                 doLast {
                     if (ext.versionService.developmentBuild) {
-                        throw IllegalStateException("The development build configuration is active, which is not allowed for release versions!")
+                        throw IllegalStateException(
+                            "The development build configuration is active, which is not allowed for release versions!"
+                        )
                     }
                     if (!ext.signMethod.needSignature() && !ext.allowUnsignedReleaseBuild) {
-                        throw IllegalStateException("Package signing is disabled, which is not allowed for release versions! "
-                                + "(For testing purposes only, you may set the freemarker.allowUnsignedReleaseBuild "
-                                + "Gradle property to true.)")
+                        throw IllegalStateException(
+                            "Package signing is disabled, which is not allowed for release versions! " +
+                                    "(For testing purposes only, you may set the freemarker.allowUnsignedReleaseBuild " +
+                                    "Gradle property to true.)"
+                        )
                     }
                 }
             }
